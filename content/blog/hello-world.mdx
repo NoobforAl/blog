@@ -1,0 +1,78 @@
+---
+title: "Hello World: A Journey Through C and Assembly"
+date: "2024-01-10"
+excerpt: "Every language we want to start, we greet the world with a machine. A machine that today is connected to the whole world and without any obligation gives all its power to us so we can create."
+tags: ["C", "Assembly", "Programming", "Hello World", "Low-Level Programming"]
+---
+
+# Hello World: A Journey Through C and Assembly
+
+Every language we want to start, we greet the world with a machine. A machine that today is connected to the whole world and without any obligation gives all its power to us so we can create. Like the creator who created us, to infinity.
+
+In this first blog post, I'm writing "Hello World" with C and Assembly—the foundational languages that bring us closer to the machine itself.
+
+## The Philosophy of Hello World
+
+"Hello World" is more than just a simple program. It's a tradition, a rite of passage, and a bridge between human thought and machine execution. When we write our first program, we're not just outputting text—we're establishing a connection with the computer, learning its language, and beginning our journey of creation.
+
+## Hello World in C
+
+
+```c
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+### Breaking It Down
+
+- `#include <stdio.h>` - This includes the Standard Input/Output library, which provides the `printf` function
+- `int main()` - The entry point of every C program. It returns an integer (0 typically means success)
+- `printf("Hello, World!\n")` - Prints our greeting to the console. The `\n` is a newline character
+- `return 0` - Indicates successful program execution
+
+
+## Hello World in Assembly
+
+
+```asm
+section .data
+    msg db 'Hello, World!', 0xA    ; message with newline
+    len equ $ - msg                 ; length of message
+
+section .text
+    global _start
+
+_start:
+    ; write syscall
+    mov rax, 1          ; sys_write
+    mov rdi, 1          ; stdout
+    mov rsi, msg        ; message address
+    mov rdx, len        ; message length
+    syscall             ; invoke kernel
+
+    ; exit syscall
+    mov rax, 60         ; sys_exit
+    mov rdi, 0          ; exit code
+    syscall             ; invoke kernel
+```
+
+### Understanding Assembly
+
+- `.data` section - Contains initialized data (our message)
+- `.text` section - Contains the executable code
+- `_start` - The entry point (equivalent to `main` in C)
+- System calls - Direct communication with the operating system kernel
+  - `sys_write` (1) - Writes to a file descriptor (1 = stdout)
+  - `sys_exit` (60) - Terminates the program
+
+### Assembling and Linking
+
+```bash
+nasm -f elf64 hello.asm -o hello.o
+ld hello.o -o hello
+./hello
+```

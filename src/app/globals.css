@@ -1,26 +1,198 @@
 @import "tailwindcss";
+@import "highlight.js/styles/github-dark.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #0f0f0f;
+    --foreground: #e5e7eb;
+
+    /* Modern Dark Theme Colors - Based on icon colors */
+    --primary: #1ea6d5;
+    --primary-hover: #1ea9d8;
+    --secondary: #1d98c4;
+    --accent: #1da1cf;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border: #374151;
+    --border-light: #4b5563;
+    --bg-card: #1a1a1a;
+    --bg-hover: #262626;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    color-scheme: dark;
+    background: var(--background);
+    scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    @apply font-sans;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar - Modern and Subtle */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-light);
+}
+
+/* Code styling - Clean and Modern */
+pre {
+    background: #0d1117 !important;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 1.25rem;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+code {
+    background: var(--bg-card);
+    color: var(--accent);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+p code,
+li code {
+    background: var(--bg-card);
+    color: var(--accent);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+}
+
+pre code {
+    background: transparent !important;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+p code,
+li code {
+    background: var(--bg-card);
+    color: var(--accent);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+}
+
+/* Syntax Highlighting Styles */
+.hljs {
+    background: #0d1117 !important;
+    color: #c9d1d9;
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: #8b949e;
+    font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+    color: #ff7b72;
+}
+
+.hljs-function .hljs-keyword {
+    color: #d2a8ff;
+}
+
+.hljs-subst {
+    color: #c9d1d9;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition,
+.hljs-variable,
+.hljs-template-tag,
+.hljs-template-variable {
+    color: #1ea6d5;
+}
+
+.hljs-title.class_,
+.hljs-class .hljs-title {
+    color: #ffa657;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-literal {
+    color: #1da1cf;
+}
+
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-doctag,
+.hljs-tag,
+.hljs-attr,
+.hljs-attribute,
+.hljs-meta {
+    color: #7ee787;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}
+
+.hljs-emphasis {
+    font-style: italic;
+}
+
+/* Selection */
+::selection {
+    background: var(--primary);
+    color: white;
+}
+
+*:focus {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
 }
