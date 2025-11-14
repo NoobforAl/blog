@@ -16,13 +16,22 @@ export default function MDXImage({
   className = '' 
 }: MDXImageProps) {
   if (src.startsWith('http')) {
+    const imageWidth = width || 800;
+    const imageHeight = height || 450;
     return (
-      <img
-        src={src}
-        alt={alt}
-        className={`rounded-lg border border-[#374151] my-6 ${className}`}
-        loading="lazy"
-      />
+      <div className={`my-6 flex justify-center ${className}`}>
+        <div className="relative w-full max-w-4xl rounded-lg border border-[#374151] overflow-hidden">
+          <Image
+            src={src}
+            alt={alt}
+            width={imageWidth}
+            height={imageHeight}
+            className="w-full h-auto"
+            loading="lazy"
+            unoptimized
+          />
+        </div>
+      </div>
     );
   }
 

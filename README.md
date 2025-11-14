@@ -7,7 +7,7 @@ This blog serves as a space to share knowledge, insights, and experiences in sof
 ## Project Structure
 
 ```
-ox20.ir-blog/
+blog/
 ├── content/
 │   └── blog/          # Blog posts (MDX files)
 ├── src/

@@ -1,16 +1,20 @@
 import type { MDXComponents } from 'mdx/types'
+import type { ImgHTMLAttributes } from 'react'
 import MDXImage from './MDXImage'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     img: (props) => {
-      const { src, alt, width, height, className, ...rest } = props as any;
+      const { src, alt, width, height, className } = props as ImgHTMLAttributes<HTMLImageElement>;
       
       if (!src) return null;
       
+      // Ensure src is a string (convert if it's a Blob URL)
+      const srcString = typeof src === 'string' ? src : src.toString();
+      
       return (
         <MDXImage
-          src={src}
+          src={srcString}
           alt={alt || ''}
           width={width ? parseInt(width.toString()) : undefined}
           height={height ? parseInt(height.toString()) : undefined}
