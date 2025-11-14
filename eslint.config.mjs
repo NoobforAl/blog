@@ -20,6 +20,13 @@ const eslintConfig = [
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    // Allow CommonJS require() in server.js and next.config.js for cPanel compatibility
+    files: ["server.js", "next.config.js"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
