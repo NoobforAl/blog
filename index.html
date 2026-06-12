@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Developer Blog</title>
+    <meta name="description"
+        content="A developer blog sharing knowledge and insights. I started this blog to deepen my knowledge and slow things down in a world moving at a frightening pace." />
+    <meta name="keywords"
+        content="blog, developer, programming, web development, technology, software development, coding, tutorials" />
+    <meta name="author" content="Developer" />
+    <meta name="robots" content="index, follow" />
+    <meta name="format-detection" content="telephone=no, address=no, email=no" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Developer Blog" />
+    <meta property="og:description"
+        content="A developer blog sharing knowledge and insights. I started this blog to deepen my knowledge and slow things down in a world moving at a frightening pace." />
+    <meta property="og:site_name" content="Developer Blog" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Developer Blog" />
+    <meta name="twitter:description"
+        content="A developer blog sharing knowledge and insights. I started this blog to deepen my knowledge and slow things down in a world moving at a frightening pace." />
+    <meta name="twitter:creator" content="@developer" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..600&display=swap"
+        rel="stylesheet" />
+
+    <link data-trunk rel="tailwind-css" href="styles/globals.css" />
+    <link rel="alternate" type="application/rss+xml" title="Developer Blog" href="/feed.xml" />
+
+    <link data-trunk rel="copy-file" href="static/robots.txt" />
+    <link data-trunk rel="copy-file" href="static/sitemap.xml" />
+    <link data-trunk rel="copy-file" href="static/feed.xml" />
+    <link data-trunk rel="copy-file" href="static/.htaccess" />
+    <link data-trunk rel="copy-dir" href="static/images" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+        integrity="sha384-RH2xi4eIQ/gjtbs9fUXM68sLSi99C7ZWBRX1vDrVv6GQXRibxXLbwO2NGZB74MbU"
+        crossorigin="anonymous"></script>
+    <script>
+        window.highlightCodeBlocks = function () {
+            if (window.hljs) {
+                document.querySelectorAll('pre code:not([data-highlighted="yes"])')
+                    .forEach(function (el) { window.hljs.highlightElement(el); });
+            }
+        };
+    </script>
+</head>
+
+<body class="antialiased bg-[#0f0f0f] text-white">
+    <noscript>
+        <div style="max-width:42rem;margin:4rem auto;padding:0 1rem;font-family:monospace;color:#9ca3af;">
+            <h1 style="color:#fff;">Developer Blog</h1>
+            <p>A developer blog sharing knowledge and insights about programming, web development, and technology.</p>
+            <p>This site is a WebAssembly application and requires JavaScript to render. You can also find me on
+                <a href="https://github.com/NoobforAl" style="color:#1ea6d5;">GitHub</a>.
+            </p>
+        </div>
+    </noscript>
+</body>
+
+</html>

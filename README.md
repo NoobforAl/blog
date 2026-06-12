@@ -1,6 +1,6 @@
 # Blog
 
-A **personal blog** focused on **software development**, built with Next.js, TypeScript, and MDX.
+A **personal blog** focused on **software development**, built fully in **Rust** with [Yew](https://yew.rs/) (WebAssembly) and Markdown content.
 
 This blog serves as a space to share knowledge, insights, and experiences in software development, programming, and web technologies.
 
@@ -9,104 +9,78 @@ This blog serves as a space to share knowledge, insights, and experiences in sof
 ```
 blog/
 ├── content/
-│   └── blog/          # Blog posts (MDX files)
+│   └── blog/          # Blog posts (MDX/Markdown files)
 ├── src/
-│   ├── app/           # Next.js App Router pages
-│   ├── components/    # React components
-│   └── lib/           # Utility functions
-├── public/            # Static assets
-├── server.js          # Custom Express server for cPanel
-├── next.config.js     # Next.js configuration
-└── package.json       # Project dependencies and scripts
+│   ├── main.rs        # App entry + router
+│   ├── components/    # Yew components (header, footer, layout)
+│   ├── pages/         # Pages (home, blog list, blog post, 404)
+│   ├── posts.rs       # Post data (embedded at compile time)
+│   ├── markdown.rs    # Markdown -> HTML rendering
+│   └── meta.rs        # Document title/meta helpers
+├── styles/
+│   └── globals.css    # Tailwind CSS v4 input + custom styles
+├── static/            # Static assets copied to dist (images, .htaccess)
+├── build.rs           # Parses post frontmatter, generates sitemap/robots
+├── index.html         # Trunk entry point
+├── Trunk.toml         # Trunk configuration
+└── Cargo.toml         # Rust dependencies
 ```
 
 ## Blog Posts
 
-Blog posts are stored as MDX files in the `content/blog/` directory. Each post is a markdown file with frontmatter metadata. See `content/README.md` for detailed MDX format specification.
+Blog posts are stored as `.mdx` files in `content/blog/`. Each post is a markdown file with YAML frontmatter. See `content/README.md` for the format specification.
+
+Posts are parsed at **compile time** by `build.rs` and embedded directly into the WebAssembly binary — no runtime file access or API needed.
 
 ## Getting Started
 
+### Prerequisites
+
 ```bash
-# Install dependencies
-npm install
+# Rust toolchain (https://rustup.rs)
+rustup target add wasm32-unknown-unknown
 
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
+# Trunk (WASM bundler) — https://trunkrs.dev
+cargo install trunk --locked
+# or download a prebuilt binary from https://github.com/trunk-rs/trunk/releases
 ```
 
-## Available Scripts
+### Development
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript type checking
-- `npm run lint:fix` - Fix ESLint errors automatically
+```bash
+# Run development server (http://localhost:3000)
+trunk serve
+
+# Build for production (outputs to dist/)
+SITE_URL=https://your-domain.com trunk build --release
+```
+
+`SITE_URL` controls the URLs written into the generated `sitemap.xml`, `robots.txt`, and `feed.xml` (RSS) — defaults to `http://localhost:3000`. Prefer `make build` over plain `trunk build` so these files are regenerated before the asset pipeline copies them.
 
 ## Tech Stack
 
-- **Next.js** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **MDX** - Markdown with JSX support
-- **Tailwind CSS** - Utility-first CSS framework
-- **rehype-highlight** - Syntax highlighting for code blocks
-- **Express** - Custom server for cPanel deployment
+- **Rust + Yew** - Frontend framework compiled to WebAssembly
+- **yew-router** - Client-side routing
+- **Trunk** - Build tool and dev server
+- **Tailwind CSS v4** - Utility-first CSS (compiled by Trunk)
+- **pulldown-cmark** - Markdown rendering
+- **highlight.js** - Syntax highlighting for code blocks
 
 ## Deployment
 
-### cPanel Deployment
+The production build is a fully static site in `dist/` — it can be hosted anywhere that serves static files.
 
-This project includes a custom Express server (`server.js`) for deploying on cPanel with Node.js App.
-
-#### Key Files for cPanel
-
-- **`server.js`** - Custom Express server that runs Next.js in production mode
-- **`package.json`** - Contains all dependencies including `express`
-- **`next.config.js`** - Next.js configuration (JavaScript format to avoid TypeScript runtime dependency)
-- **`.next/`** - Build output folder (generated after `npm run build`)
-- **`public/`** - Static assets folder
-
-#### Quick Deployment Steps
+### cPanel / Apache
 
 1. **Build the project:**
    ```bash
-   npm install
-   npm run build
+   SITE_URL=https://your-domain.com trunk build --release
    ```
 
-2. **Upload files to cPanel:**
-   - Upload all project files including `server.js`, `package.json`, `.next/`, `public/`, and `node_modules/` (or run `npm install` on server)
+2. **Upload the contents of `dist/`** to your web root (e.g. `public_html/`).
 
-3. **Configure Node.js App in cPanel:**
-   - Go to "Node.js App" in cPanel
-   - Set **Application startup file**: `server.js`
-   - Set **Application mode**: `production`
-   - Set **Node.js version**: `18` or higher
-   - Enable **NPM install** (to install dependencies automatically)
-   - cPanel will automatically set the `PORT` environment variable
+The included `.htaccess` (copied into `dist/` automatically) handles:
+- Serving `index.html` for all SPA routes (e.g. `/blog/my-post`)
+- The `application/wasm` MIME type
 
-4. **Start the application:**
-   - Click "Start" in cPanel Node.js App
-   - The server will start and handle all requests
-
-#### Important Notes
-
-- **Port**: cPanel automatically sets the `PORT` environment variable - no need to configure it in `server.js`
-- **Express**: Required dependency for `server.js` - included in `package.json`
-- **Build**: Always run `npm run build` before deploying
-- **Environment Variables**: cPanel handles `NODE_ENV=production` and `PORT` automatically
-
-#### Troubleshooting
-
-- **Server won't start**: Check that `express` is installed (`npm install`) and `npm run build` has been run
-- **404 errors**: Verify that `.next/` folder exists and build completed successfully
-- **Static files not loading**: Ensure `public/` folder is uploaded correctly
-- **"Cannot find module 'express'" error**: Run `npm install` on the server to install all dependencies
-- **"Cannot find module 'typescript'" error**: This happens if `next.config.ts` is used. The project uses `next.config.js` to avoid this issue. If you see this error, ensure `next.config.js` exists (not `.ts`)
-- **Dependencies not installed**: Make sure to run `npm install` on the server, or enable "NPM install" in cPanel Node.js App settings
+No Node.js app, server process, or `npm install` is required — it's just static files.

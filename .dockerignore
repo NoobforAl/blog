@@ -1,0 +1,12 @@
+target
+dist
+static/sitemap.xml
+static/robots.txt
+static/feed.xml
+.env*
+.git
+.github
+.trunk
+.playwright-mcp
+*.md
+!content/**/*.md

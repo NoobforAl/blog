@@ -89,7 +89,7 @@ You can use all Markdown features:
 
 ### Images
 
-You can add images to your blog posts. Place your images in the `public/images/blog/` directory.
+You can add images to your blog posts. Place your images in the `static/images/blog/` directory.
 
 **Basic Markdown syntax:**
 ```markdown
@@ -107,7 +107,7 @@ You can add images to your blog posts. Place your images in the `public/images/b
 ```
 
 **Notes:**
-- Local images should be placed in `public/images/blog/`
+- Local images should be placed in `static/images/blog/`
 - Use paths starting with `/images/blog/` for local images
 - External images (starting with `http://` or `https://`) are also supported
 - Images are automatically optimized using Next.js Image component
