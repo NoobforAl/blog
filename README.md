@@ -70,6 +70,8 @@ SITE_URL=https://your-domain.com trunk build --release
 
 The production build is a fully static site in `dist/` — it can be hosted anywhere that serves static files.
 
+> **Detailed guides:** see [`docs/deployment.md`](docs/deployment.md) (static hosting, Docker, docker-compose behind a reverse proxy, CI/release) and [`docs/environment.md`](docs/environment.md) (every build-time and runtime variable).
+
 ### cPanel / Apache
 
 1. **Build the project:**

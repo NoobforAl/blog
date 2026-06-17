@@ -202,7 +202,7 @@ fn generate_rss(posts: &[PostMeta], site_url: &str) {
     let mut xml = String::from("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     xml.push_str("<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n");
     xml.push_str("  <channel>\n");
-    xml.push_str("    <title>Developer Blog</title>\n");
+    xml.push_str("    <title>x20</title>\n");
     xml.push_str(&format!("    <link>{}</link>\n", site_url));
     xml.push_str("    <description>A developer blog sharing knowledge and insights about programming, web development, and technology.</description>\n");
     xml.push_str("    <language>en-us</language>\n");

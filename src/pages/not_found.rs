@@ -7,7 +7,7 @@ use crate::{meta, Route};
 pub fn not_found() -> Html {
     use_effect_with((), |_| {
         meta::apply(&meta::PageMeta {
-            title: "Page Not Found | Developer Blog",
+            title: "Page Not Found | x20",
             description: "The page you're looking for doesn't exist or has been moved.",
             path: "/404",
             robots: "noindex",

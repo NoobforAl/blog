@@ -36,7 +36,7 @@ pub fn blog_post(props: &BlogPostProps) -> Html {
                 Some(format!("{}{}", meta::site_url(), post.og_image))
             };
             meta::apply(&meta::PageMeta {
-                title: &format!("{} | Developer Blog", post.title),
+                title: &format!("{} | x20", post.title),
                 description: &description,
                 keywords: &keywords,
                 path: &format!("/blog/{}", slug),
@@ -98,7 +98,7 @@ pub fn blog_post(props: &BlogPostProps) -> Html {
         },
         "publisher": {
             "@type": "Organization",
-            "name": "Developer Blog",
+            "name": "x20",
         },
         "mainEntityOfPage": {
             "@type": "WebPage",

@@ -28,7 +28,7 @@ pub struct PageMeta<'a> {
 impl Default for PageMeta<'_> {
     fn default() -> Self {
         PageMeta {
-            title: "Developer Blog",
+            title: "x20",
             description: "",
             keywords: "",
             path: "/",

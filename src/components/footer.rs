@@ -14,7 +14,7 @@ pub fn footer() -> Html {
                             rel="noopener noreferrer"
                             class="text-[#9ca3af] hover:text-[#1ea6d5] transition-colors duration-200"
                         >
-                            { "NoobforAl" }
+                            { "x20" }
                         </a>
                         <span class="text-[#374151]">{ " · " }</span>
                         <span class="font-mono">{ "built with Rust + Yew" }</span>

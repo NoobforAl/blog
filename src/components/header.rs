@@ -64,7 +64,7 @@ pub fn header() -> Html {
                         classes="font-mono text-sm text-[#e5e7eb] hover:text-white transition-colors duration-200"
                     >
                         <span class="text-[#10b981]">{ "~$ " }</span>
-                        { "noobforal" }
+                        { "x20" }
                         <span class="blink-cursor" aria-hidden="true" style="width:0.45em;height:1em;"></span>
                     </Link<Route>>
 

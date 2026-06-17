@@ -7,7 +7,7 @@ use crate::{date, meta, posts, profile, Route};
 pub fn home() -> Html {
     use_effect_with((), |_| {
         meta::apply(&meta::PageMeta {
-            title: &format!("{} — {} | Developer Blog", profile::NAME, profile::ROLE),
+            title: &format!("{} — {} | x20", profile::NAME, profile::ROLE),
             description: "A developer blog sharing knowledge and insights. I started this blog to deepen my knowledge and slow things down in a world moving at a frightening pace.",
             keywords: "blog, developer, programming, web development, technology, software development",
             path: "/",
@@ -36,15 +36,9 @@ pub fn home() -> Html {
                             { profile::TAGLINE }
                         </p>
                         <div class="rise rise-5 flex flex-wrap items-center gap-3">
-                            <a
-                                href="#projects"
-                                class="px-5 py-2.5 bg-[#1ea6d5] text-[#0f0f0f] font-mono text-sm font-semibold rounded-md hover:bg-[#1ea9d8] transition-colors duration-200"
-                            >
-                                { "./view-work" }
-                            </a>
                             <Link<Route>
                                 to={Route::Blog}
-                                classes="px-5 py-2.5 bg-transparent text-[#e5e7eb] font-mono text-sm border border-[#374151] rounded-md hover:border-[#1ea6d5] hover:text-[#1ea6d5] transition-colors duration-200"
+                                classes="px-5 py-2.5 bg-[#1ea6d5] text-[#0f0f0f] font-mono text-sm font-semibold rounded-md hover:bg-[#1ea9d8] transition-colors duration-200"
                             >
                                 { "cd /blog" }
                             </Link<Route>>
@@ -103,45 +97,6 @@ pub fn home() -> Html {
                                     }) }
                                 </div>
                             </div>
-                        }) }
-                    </div>
-                </section>
-
-                // ---- Projects: $ ls ~/projects ----
-                <section id="projects">
-                    <p class="prompt-label mb-6">{ "ls ~/projects" }</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                        { for profile::PROJECTS.iter().map(|project| html! {
-                            <a
-                                key={project.name}
-                                href={project.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="glow-card block bg-[#141414] border border-[#262626] rounded-xl p-6 sm:p-8 group"
-                            >
-                                <div class="flex items-baseline justify-between gap-4 mb-3">
-                                    <h3 class="font-mono text-lg text-white group-hover:text-[#1ea6d5] transition-colors duration-200">
-                                        { project.name }
-                                        <span class="text-[#6b7280]">{ "/" }</span>
-                                    </h3>
-                                    <span class="font-mono text-xs text-[#6b7280] group-hover:text-[#1ea6d5] transition-colors duration-200">
-                                        { "↗" }
-                                    </span>
-                                </div>
-                                <p class="text-[#9ca3af] text-sm leading-relaxed mb-5">
-                                    { project.description }
-                                </p>
-                                <div class="flex flex-wrap gap-2">
-                                    { for project.tech.iter().map(|tech| html! {
-                                        <span
-                                            key={*tech}
-                                            class="px-2 py-0.5 text-[#1ea6d5] text-xs font-mono rounded border border-[rgba(30,166,213,0.25)] bg-[rgba(30,166,213,0.06)]"
-                                        >
-                                            { *tech }
-                                        </span>
-                                    }) }
-                                </div>
-                            </a>
                         }) }
                     </div>
                 </section>

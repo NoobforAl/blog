@@ -1,7 +1,7 @@
 //! Resume / portfolio content for the home page.
 //! Edit this file to update the personal info shown on the site.
 
-pub const NAME: &str = "NoobforAl";
+pub const NAME: &str = "x20";
 pub const ROLE: &str = "Software Developer";
 pub const TAGLINE: &str =
     "I like the layers most people skip — C, Assembly, Rust, and the quiet machinery underneath the web.";
@@ -36,27 +36,5 @@ pub const SKILLS: &[SkillGroup] = &[
             "Privacy tech",
             "Performance",
         ],
-    },
-];
-
-pub struct Project {
-    pub name: &'static str,
-    pub description: &'static str,
-    pub tech: &'static [&'static str],
-    pub url: &'static str,
-}
-
-pub const PROJECTS: &[Project] = &[
-    Project {
-        name: "blog",
-        description: "This site — a fully static blog written in Rust, compiled to WebAssembly with Yew, posts embedded at build time.",
-        tech: &["Rust", "Yew", "WASM", "Tailwind"],
-        url: "https://github.com/NoobforAl",
-    },
-    Project {
-        name: "monerodd",
-        description: "Tinkering with Monero internals — digging into how privacy-preserving money actually works under the hood.",
-        tech: &["Privacy", "Cryptocurrency"],
-        url: "https://github.com/NoobforAl",
     },
 ];

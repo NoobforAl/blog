@@ -8,7 +8,7 @@ use crate::{date, meta, posts, Route};
 pub fn blog_list() -> Html {
     use_effect_with((), |_| {
         meta::apply(&meta::PageMeta {
-            title: "Blog | Developer Blog",
+            title: "Blog | x20",
             description: "Read the latest blog posts about programming, web development, and technology. Explore tutorials, insights, and knowledge sharing.",
             keywords: "blog, programming, web development, tutorials, technology, coding",
             path: "/blog",
@@ -23,7 +23,7 @@ pub fn blog_list() -> Html {
     let json_ld = json!({
         "@context": "https://schema.org",
         "@type": "Blog",
-        "name": "Developer Blog",
+        "name": "x20",
         "description": "A developer blog sharing knowledge and insights about programming, web development, and technology.",
         "url": format!("{}/blog", base_url),
         "blogPost": posts.iter().map(|post| json!({
