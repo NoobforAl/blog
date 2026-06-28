@@ -1,14 +1,15 @@
 # Deployment
 
-The blog is a fully static site: Yew compiled to WebAssembly with Trunk, posts
+The blog is a fully static site: Leptos compiled to WebAssembly with Trunk, posts
 embedded at build time. The build output in `dist/` is plain files — `.html`,
 `.wasm`, `.js`, `.css`, and copied assets — that any static host can serve.
 
 There are two supported deploy targets:
 
 1. **Static hosting** (cPanel / Apache, Netlify, S3, …) — upload `dist/`.
-2. **Docker** — a tiny container running [`static-web-server`], usually behind
-   a reverse proxy (HAProxy). This is the path used in production.
+2. **Docker** — a tiny container running [`static-web-server`], typically behind
+   a reverse proxy (HAProxy) that terminates TLS. This is the path used in
+   production.
 
 See [`environment.md`](./environment.md) for every environment variable.
 
@@ -56,7 +57,7 @@ The image is multi-stage:
 
 ```bash
 # via Makefile (tags IMAGE:TAG, defaults blog:<latest-git-tag>)
-make docker-build
+make image
 
 # or directly
 docker build --build-arg SITE_URL=https://example.com -t blog:latest .
@@ -82,35 +83,12 @@ docker run -d -p 8080:80 \
 
 ---
 
-## 3. docker-compose behind a reverse proxy
+## 3. Behind a reverse proxy
 
-In production the container runs as a **backend with no published host ports**;
-the reverse proxy (HAProxy) terminates TLS and forwards traffic to it on the
-shared `web` network. That is exactly what `docker-compose.yml` describes.
-
-```bash
-# one-time: create the network shared with your proxy (if it doesn't exist)
-docker network create web
-
-# build + start (reads .env, or pass vars inline)
-SITE_URL=https://example.com CORS_ORIGINS="https://example.com" \
-  docker compose up -d --build
-```
-
-Configuration (via a `.env` file next to `docker-compose.yml`, or the shell):
-
-| Variable       | Purpose                                                        | Default                  |
-| -------------- | -------------------------------------------------------------- | ------------------------ |
-| `SITE_URL`     | Canonical domain baked into sitemap/robots/feed at build time. | `http://localhost:3000`  |
-| `CORS_ORIGINS` | Comma-separated allowed origins (→ `SERVER_CORS_ALLOW_ORIGINS`). | `*`                     |
-
-The blog service only listens on the internal `web` network (`expose: "80"`),
-so nothing is reachable directly from the host — point your proxy's backend at
-`blog:80`.
-
-> Running standalone (no external proxy)? Remove `external: true` from the `web`
-> network in `docker-compose.yml` and add a `ports: ["8080:80"]` mapping to the
-> `blog` service.
+In production the container runs as a **backend** and the reverse proxy
+(HAProxy, Nginx, Caddy, …) terminates TLS and forwards traffic to it. Publish no
+host ports on the container — instead put it on the same network as the proxy
+and point the proxy's backend at the container's port 80.
 
 ### Example HAProxy backend
 
@@ -130,10 +108,10 @@ inside the container is what actually serves the files.
 
 `static-web-server` serves regardless of the `Host` header, so serving the same
 site on several domains works with no extra config. The only domain-specific
-concern is **CORS**: list every origin that makes cross-origin requests in
-`CORS_ORIGINS`, or leave it as `*`. Note that `SITE_URL` stays a single value —
-canonical tags, the sitemap, and the RSS feed must point at one primary domain
-for SEO.
+concern is **CORS**: list every origin that makes cross-origin requests via
+`-e SERVER_CORS_ALLOW_ORIGINS="…"`, or leave it as `*`. Note that `SITE_URL`
+stays a single value — canonical tags, the sitemap, and the RSS feed must point
+at one primary domain for SEO.
 
 ---
 
@@ -141,8 +119,8 @@ for SEO.
 
 `.github/workflows/ci.yml`:
 
-- **lint** — `cargo fmt --check` + `clippy -D warnings` (run `make lint` locally
-  before pushing).
+- **lint** — `cargo fmt --check` + `clippy -D warnings` (run both locally before
+  pushing).
 - **build** — `make build`, uploads `dist/` as an artifact. `SITE_URL` comes
   from the `SITE_URL` repository variable (falls back to localhost).
 - **docker** — runs **only on a `vX.Y.Z` tag**. Builds for `linux/amd64` and

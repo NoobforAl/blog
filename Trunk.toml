@@ -7,3 +7,13 @@ port = 3000
 
 [tools]
 tailwindcss = "4.1.11"
+
+# Run build.rs before the asset pipeline. build.rs generates static/sitemap.xml,
+# static/robots.txt and static/feed.xml; Trunk's build and copy-file stages run
+# in PARALLEL, so on a clean build the copy can fire before those files exist —
+# yielding a 404 on /feed.xml etc. A pre_build hook runs to completion first,
+# guaranteeing the files are present before they're copied into dist/.
+[[hooks]]
+stage = "pre_build"
+command = "cargo"
+command_arguments = ["check", "--target", "wasm32-unknown-unknown"]

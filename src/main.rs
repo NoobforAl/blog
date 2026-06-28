@@ -1,13 +1,14 @@
 mod components;
+mod config;
 mod date;
 mod markdown;
 mod meta;
 mod pages;
 mod posts;
-mod profile;
 
-use yew::prelude::*;
-use yew_router::prelude::*;
+use leptos::prelude::*;
+use leptos_router::components::{Route, Router, Routes};
+use leptos_router::path;
 
 use components::layout::Layout;
 use pages::blog_list::BlogList;
@@ -15,39 +16,21 @@ use pages::blog_post::BlogPost;
 use pages::home::Home;
 use pages::not_found::NotFound;
 
-#[derive(Clone, Routable, PartialEq)]
-pub enum Route {
-    #[at("/")]
-    Home,
-    #[at("/blog")]
-    Blog,
-    #[at("/blog/:slug")]
-    BlogPost { slug: String },
-    #[not_found]
-    #[at("/404")]
-    NotFound,
-}
-
-fn switch(route: Route) -> Html {
-    match route {
-        Route::Home => html! { <Home /> },
-        Route::Blog => html! { <BlogList /> },
-        Route::BlogPost { slug } => html! { <BlogPost {slug} /> },
-        Route::NotFound => html! { <NotFound /> },
-    }
-}
-
-#[function_component(App)]
-fn app() -> Html {
-    html! {
-        <BrowserRouter>
+#[component]
+fn App() -> impl IntoView {
+    view! {
+        <Router>
             <Layout>
-                <Switch<Route> render={switch} />
+                <Routes fallback=|| view! { <NotFound /> }>
+                    <Route path=path!("/") view=Home />
+                    <Route path=path!("/blog") view=BlogList />
+                    <Route path=path!("/blog/:slug") view=BlogPost />
+                </Routes>
             </Layout>
-        </BrowserRouter>
+        </Router>
     }
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render();
+    leptos::mount::mount_to_body(App);
 }

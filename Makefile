@@ -5,27 +5,21 @@ IMAGE    ?= blog
 TAG      ?= $(or $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//'),latest)
 SITE_URL ?= http://localhost:3000
 
-.PHONY: build clean lint fmt serve docker-build
+.PHONY: dev build image clean
 
-# cargo check first so build.rs regenerates sitemap/robots before
-# trunk's asset pipeline copies them.
-build:
-	SITE_URL=$(SITE_URL) cargo check --target wasm32-unknown-unknown
-	SITE_URL=$(SITE_URL) trunk build --release
-
-serve:
+# Dev server with hot reload on http://localhost:3000 (rebuilds on file change).
+dev:
 	trunk serve
 
-lint:
-	cargo fmt --all -- --check
-	cargo clippy --target wasm32-unknown-unknown --all-targets -- -D warnings
+# Production build -> dist/. Trunk's pre_build hook (see Trunk.toml) runs
+# build.rs first so the generated sitemap/robots/feed are copied into dist/.
+build:
+	SITE_URL=$(SITE_URL) trunk build --release
 
-fmt:
-	cargo fmt --all
+# Build the Docker image (tags IMAGE:TAG, defaults blog:<latest-git-tag>).
+image:
+	docker build --platform linux/amd64 --build-arg SITE_URL=$(SITE_URL) -t $(IMAGE):$(TAG) .
 
 clean:
 	cargo clean
 	rm -rf dist
-
-docker-build:
-	docker build --platform linux/amd64 --build-arg SITE_URL=$(SITE_URL) -t $(IMAGE):$(TAG) .

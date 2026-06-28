@@ -1,11 +1,11 @@
-use yew::prelude::*;
-use yew_router::prelude::*;
+use leptos::prelude::*;
+use leptos_router::components::A;
 
-use crate::{meta, Route};
+use crate::meta;
 
-#[function_component(NotFound)]
-pub fn not_found() -> Html {
-    use_effect_with((), |_| {
+#[component]
+pub fn NotFound() -> impl IntoView {
+    Effect::new(move |_| {
         meta::apply(&meta::PageMeta {
             title: "Page Not Found | x20",
             description: "The page you're looking for doesn't exist or has been moved.",
@@ -16,7 +16,7 @@ pub fn not_found() -> Html {
         meta::scroll_to_top();
     });
 
-    html! {
+    view! {
         <div class="container-responsive py-16 sm:py-24">
             <div class="max-w-2xl mx-auto px-4 text-center">
                 <h1 class="text-6xl sm:text-7xl font-bold text-[#1ea6d5] mb-6">{ "404" }</h1>
@@ -26,12 +26,12 @@ pub fn not_found() -> Html {
                 <p class="text-[#9ca3af] mb-8">
                     { "The page you're looking for doesn't exist or has been moved." }
                 </p>
-                <Link<Route>
-                    to={Route::Home}
-                    classes="px-6 py-3 bg-[#1a1a1a] text-white border border-[#374151] rounded-lg font-medium hover:bg-[#262626] hover:border-[#4b5563] transition-all duration-200"
+                <A
+                    href="/"
+                    attr:class="inline-block px-6 py-3 bg-[#1a1a1a] text-white border border-[#262626] rounded-lg font-medium hover:bg-[#262626] hover:border-[#1ea6d5] transition-all duration-200"
                 >
                     { "Back to Home" }
-                </Link<Route>>
+                </A>
             </div>
         </div>
     }

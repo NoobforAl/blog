@@ -1,7 +1,8 @@
 use pulldown_cmark::{html, Options, Parser};
-use yew::{AttrValue, Html};
 
-pub fn render(markdown: &str) -> Html {
+/// Render a Markdown string to an HTML string.
+/// Injected into the DOM via Leptos's `inner_html` attribute at the call site.
+pub fn to_html(markdown: &str) -> String {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_TABLES);
     options.insert(Options::ENABLE_STRIKETHROUGH);
@@ -12,5 +13,5 @@ pub fn render(markdown: &str) -> Html {
     let mut out = String::new();
     html::push_html(&mut out, parser);
 
-    Html::from_html_unchecked(AttrValue::from(out))
+    out
 }

@@ -1,6 +1,6 @@
 # Blog
 
-A **personal blog** focused on **software development**, built fully in **Rust** with [Yew](https://yew.rs/) (WebAssembly) and Markdown content.
+A **blog** focused on **software development**, built fully in **Rust** with [Leptos](https://leptos.dev/) (WebAssembly) and Markdown content.
 
 This blog serves as a space to share knowledge, insights, and experiences in software development, programming, and web technologies.
 
@@ -12,7 +12,7 @@ blog/
 │   └── blog/          # Blog posts (MDX/Markdown files)
 ├── src/
 │   ├── main.rs        # App entry + router
-│   ├── components/    # Yew components (header, footer, layout)
+│   ├── components/    # Leptos components (header, footer, layout)
 │   ├── pages/         # Pages (home, blog list, blog post, 404)
 │   ├── posts.rs       # Post data (embedded at compile time)
 │   ├── markdown.rs    # Markdown -> HTML rendering
@@ -59,8 +59,8 @@ SITE_URL=https://your-domain.com trunk build --release
 
 ## Tech Stack
 
-- **Rust + Yew** - Frontend framework compiled to WebAssembly
-- **yew-router** - Client-side routing
+- **Rust + Leptos** - Frontend framework compiled to WebAssembly
+- **leptos_router** - Client-side routing
 - **Trunk** - Build tool and dev server
 - **Tailwind CSS v4** - Utility-first CSS (compiled by Trunk)
 - **pulldown-cmark** - Markdown rendering
@@ -70,7 +70,7 @@ SITE_URL=https://your-domain.com trunk build --release
 
 The production build is a fully static site in `dist/` — it can be hosted anywhere that serves static files.
 
-> **Detailed guides:** see [`docs/deployment.md`](docs/deployment.md) (static hosting, Docker, docker-compose behind a reverse proxy, CI/release) and [`docs/environment.md`](docs/environment.md) (every build-time and runtime variable).
+> **Detailed guides:** see [`docs/deployment.md`](docs/deployment.md) (static hosting, Docker behind a reverse proxy, CI/release) and [`docs/environment.md`](docs/environment.md) (every build-time and runtime variable).
 
 ### cPanel / Apache
 

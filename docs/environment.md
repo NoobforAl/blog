@@ -8,8 +8,7 @@ There are two distinct groups of variables, and the distinction matters:
   them by restarting the container; no rebuild needed.
 
 Copy [`.env.example`](../.env.example) to `.env` to set the build-time and
-compose variables locally — the `Makefile` and `docker-compose.yml` both read
-it automatically.
+image variables locally — the `Makefile` reads it automatically.
 
 ---
 
@@ -24,23 +23,22 @@ one primary domain or search engines see duplicate content. Serving the same
 build on several domains is fine — that's a CORS concern (below), not a build
 concern.
 
-### Compose / Makefile helpers
+### Makefile helpers
 
 These configure *how* the build and image are produced; they are not consumed by
 the application itself.
 
-| Variable       | Used by                | Default                       | Description                                                                 |
-| -------------- | ---------------------- | ----------------------------- | --------------------------------------------------------------------------- |
-| `IMAGE`        | `make docker-build`    | `blog`                        | Docker image name.                                                          |
-| `TAG`          | `make docker-build`    | latest git tag minus `v`, else `latest` | Docker image tag.                                                |
-| `CORS_ORIGINS` | `docker-compose.yml`   | `*`                           | Passed through to the container as `SERVER_CORS_ALLOW_ORIGINS` (see below). |
+| Variable | Used by      | Default                                 | Description        |
+| -------- | ------------ | --------------------------------------- | ------------------ |
+| `IMAGE`  | `make image` | `blog`                                  | Docker image name. |
+| `TAG`    | `make image` | latest git tag minus `v`, else `latest` | Docker image tag.  |
 
 ---
 
 ## Runtime (`static-web-server`)
 
 Set in the `runtime` stage of the `Dockerfile`. Override any of them with `-e`
-on `docker run` or under `environment:` in `docker-compose.yml`. Full reference:
+on `docker run`. Full reference:
 <https://static-web-server.net/configuration/environment-variables/>.
 
 | Variable                       | Value in image          | Description                                                                                                   |
@@ -60,20 +58,15 @@ on `docker run` or under `environment:` in `docker-compose.yml`. Full reference:
 works on any number of domains with no change. The only per-domain setting is
 which origins may make **cross-origin** requests:
 
-```yaml
-# docker-compose.yml — restrict to your domains
-environment:
-  SERVER_CORS_ALLOW_ORIGINS: "https://example.com,https://www.example.com"
+```bash
+# restrict to your domains at run time
+docker run -d -p 8080:80 \
+  -e SERVER_CORS_ALLOW_ORIGINS="https://example.com,https://www.example.com" \
+  blog:latest
 ```
 
-or via the `.env` shortcut that `docker-compose.yml` reads:
-
-```dotenv
-CORS_ORIGINS=https://example.com,https://www.example.com
-```
-
-Leaving it as `*` (the default) allows any origin, which is fine for a public
-static blog and its RSS feed.
+Leaving it as `*` (the default baked into the image) allows any origin, which is
+fine for a public static blog and its RSS feed.
 
 ---
 
@@ -85,10 +78,7 @@ static blog and its RSS feed.
 # build-time: real public domain (baked into sitemap/robots/feed/canonical)
 SITE_URL=https://example.com
 
-# docker image name/tag for `make docker-build`
+# docker image name/tag for `make image`
 IMAGE=blog
 #TAG=0.1.0
-
-# runtime CORS origins for docker-compose (defaults to *)
-#CORS_ORIGINS=https://example.com,https://www.example.com
 ```

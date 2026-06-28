@@ -13,27 +13,28 @@ ENV SITE_URL=${SITE_URL}
 
 # Cache mounts: cargo registry, build artifacts, and trunk's tool downloads
 # (tailwindcss, wasm-bindgen) survive across builds.
-# cargo check first: build.rs must write static/sitemap.xml + robots.txt
-# before trunk's asset pipeline copies them (it runs parallel to the build).
+# Trunk's pre_build hook (Trunk.toml) runs build.rs before the asset pipeline so
+# the generated static/sitemap.xml, robots.txt and feed.xml are copied into dist/.
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/target \
     --mount=type=cache,target=/root/.cache/trunk \
-    cargo check --target wasm32-unknown-unknown && trunk build --release
+    trunk build --release
 
 # static-web-server: tiny (~2.5 MB, scratch-based) Rust static file server.
-# Sits behind the external reverse proxy (HAProxy), serving plain HTTP internally.
+# Serves the built dist/ over plain HTTP on port 80 (put a reverse proxy in
+# front of it to terminate TLS).
 FROM joseluisq/static-web-server:2 AS runtime
 
 COPY --from=builder /app/dist /public
 
+# CORS defaults to any origin (fine for a public static blog / RSS feed). To
+# restrict, override SERVER_CORS_ALLOW_ORIGINS at run time with a comma-separated
+# list, e.g. -e SERVER_CORS_ALLOW_ORIGINS="https://example.com,https://www.example.com"
 ENV SERVER_ROOT=/public \
     SERVER_PORT=80 \
     SERVER_FALLBACK_PAGE=/public/index.html \
     SERVER_COMPRESSION=true \
     SERVER_CACHE_CONTROL_HEADERS=true \
-    # CORS: default allows any origin (fine for a public static blog / RSS feed).
-    # To restrict, override with a comma-separated list of your domains, e.g.
-    # SERVER_CORS_ALLOW_ORIGINS="https://example.com,https://www.example.com"
     SERVER_CORS_ALLOW_ORIGINS=* \
     SERVER_CORS_ALLOW_HEADERS="origin, content-type, accept, range" \
     SERVER_CORS_EXPOSE_HEADERS="content-length, content-range"

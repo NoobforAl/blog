@@ -1,23 +1,13 @@
-use yew::prelude::*;
+use leptos::prelude::*;
 
-#[function_component(Footer)]
-pub fn footer() -> Html {
-    html! {
+#[component]
+pub fn Footer() -> impl IntoView {
+    view! {
         <footer class="bg-[#0f0f0f] border-t border-[#262626] mt-auto">
             <div class="container-responsive py-6">
                 <div class="text-center space-y-2">
                     <p class="text-[#6b7280] text-xs sm:text-sm">
-                        { "Created by " }
-                        <a
-                            href={crate::profile::GITHUB_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-[#9ca3af] hover:text-[#1ea6d5] transition-colors duration-200"
-                        >
-                            { "x20" }
-                        </a>
-                        <span class="text-[#374151]">{ " · " }</span>
-                        <span class="font-mono">{ "built with Rust + Yew" }</span>
+                        <span class="font-mono">{ "built with Rust + Leptos" }</span>
                         <span class="text-[#374151]">{ " · " }</span>
                         <a
                             href="/feed.xml"
